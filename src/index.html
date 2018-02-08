@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>BYU Campus Map</title>
+  <meta http-equiv="content-type:" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="initial-scale=1.0 maximum-scale=1.0">
+  <link rel="stylesheet" href="esri/css/main.css">
+  <link rel="Stylesheet" href="app/style.css" type="text/css" />
+
+  <link type="text/css" rel="stylesheet" href="//cloud.typography.com/75214/6517752/css/fonts.css" media="all" />
+  <link rel="stylesheet" href="https://cdn.byu.edu/byu-theme-components/latest/byu-theme-components.min.css" />
+  <script async src="https://cdn.byu.edu/byu-theme-components/latest/byu-theme-components.min.js"></script>
+  <style>
+
+  </style>
+  <!-- <script type="text/javascript" src="app/main.js"></script> -->
+</head>
+
+<body>
+  <div id="wrapper">
+    <byu-header>
+      <span slot="site-title">Campus Map</span>
+
+      <byu-menu slot="nav" id="menu_nav">
+        <a href="#" id="Buildings_Edited">Buildings</a>
+        <a href="#" id="ParkingLayers">Parking</a>
+        <a href="#" id="Dining">Dining</a>
+        <a href="#" id="Athletics">Sports</a>
+        <a href="#" id="Services">Services</a>
+        <a href="#" id="StudentServices">Student Services</a>
+        <a href="#" id="Transportation_Merge">Transportation</a>
+        <a href="#" id="Entertainment_Museums">Entertainment and Museums</a>
+        <a href="#" id="AccessibilityRoutes">Accessibility Routes</a>
+        <a href="#" id="ComputerLabs_Merge">Computers and Printers</a>
+        <a href="#" id="Web_Cams">Webcams</a>
+        <a href="#" id="Emergency_Phones">Emergency Phones</a>
+        <a href="#" id="aed">AED Locations</a>
+      </byu-menu>
+    </byu-header>
+    <div class="page-content">
+
+      <div class="panel-side">
+        <ul id="listNode">
+          <li></li>
+        </ul>
+      </div>
+
+      <div id="viewDiv"></div>
+
+    </div>
+    <byu-footer></byu-footer>
+  </div>
+
+
+  <script>
+    // set up your dojoConfig
+    window.dojoConfig = {
+      baseUrl: '.',
+      //deps: ['app/main'],
+      packages: [
+        'app',
+        'dijit',
+        'dojo',
+        'dojox',
+        'dstore',
+        'dgrid',
+        'esri',
+        {
+          name: 'moment',
+          location: 'moment',
+          main: 'moment',
+          trees: [
+            [".", ".", /(\/\.)|(~$)|(test|txt|src|min|templates)/]
+          ]
+        }
+      ],
+      // Use the smaller, faster "lite" CSS selector engine, which works in all browsers IE8+
+			selectorEngine: 'lite'
+      // Fix the loader to use normal AMD resolution of unregistered module paths (relative to `baseUrl`)
+			// instead of the legacy Dojo resolution method (relative to the parent directory of `baseUrl`)
+    };
+  </script>
+
+  <!-- Can use Dojo loader directly -->
+  <script src="dojo/dojo.js" data-dojo-config="async: true"></script>
+  <script>
+    require(['app/main'], function(App) {
+      var app = App;
+      app.init();
+    });
+    // require(["dojo/ready"], function(ready) {
+    //   ready(function() {
+    //     initialize();
+    //   });
+    // });
+  </script>
+
+</body>
+
+</html>
