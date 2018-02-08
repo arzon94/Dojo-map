@@ -1,7 +1,7 @@
-# Bower Sample application
+# BYU Campus Map Application
 ======
 
-This is a sample application showing how to use [Bower](http://bower.io/) to build your [ArcGIS API for JavaScript](https://developers.arcgis.com/javascript/) application.
+This is the campus map for BYU implemented with [Bower](http://bower.io/), [ArcGIS API for JavaScript](https://developers.arcgis.com/javascript/), and the Dojo framework.
 It provides a Gruntfile for build scenario using Dojo.
 
 # Requirements
