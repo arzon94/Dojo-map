@@ -1,0 +1,25 @@
+// COPYRIGHT © 2017 Esri
+//
+// All rights reserved under the copyright laws of the United States
+// and applicable international laws, treaties, and conventions.
+//
+// This material is licensed for use under the Esri Master License
+// Agreement (MLA), and is bound by the terms of that agreement.
+// You may redistribute and use this code without modification,
+// provided you adhere to the terms of the MLA and include this
+// copyright notice.
+//
+// See use restrictions at http://www.esri.com/legal/pdfs/mla_e204_e300/english
+//
+// For additional information, contact:
+// Environmental Systems Research Institute, Inc.
+// Attn: Contracts and Legal Services Department
+// 380 New York Street
+// Redlands, California, USA 92373
+// USA
+//
+// email: contracts@esri.com
+//
+// See http://js.arcgis.com/4.4/esri/copyright.txt for details.
+
+define(["require","exports","../../../../core/tsSupport/extendsHelper","dojo/_base/lang","dojo/Deferred","../../../../request","../../../../core/Version","../../lib/glMatrix","../../webgl-engine/Stage","../../webgl-engine/lib/Util","../../webgl-engine/lib/Geometry","../../webgl-engine/lib/GeometryData","../../webgl-engine/materials/Material","../../webgl-engine/lib/Texture","../../support/aaBoundingBox"],function(e,r,t,n,a,o,i,s,l,u,p,m,c,d,f){function v(e,r){if(r=r||{},r.streamDataSupplier){var t=r.streamDataSupplier.request(e,"json"),n=new a(function(){return r.streamDataSupplier.cancelRequest(t)});return t.then(function(e,t){var a=y(t,r);n.resolve(a)},function(){n.reject()}),n.promise}var i=o(e),s=new a(function(){return i.cancel()});return i.then(function(e){var t=y(e.data,r);s.resolve(t)},function(){s.reject()}),s.promise}function g(e){for(var r=e.stageResources[l.ModelContentType.GEOMETRY],t=f.create(f.NEGATIVE_INFINITY),n=[0,0,0],a=[0,0,0],o=0;o<r.length;o++)for(var i=r[o],s=i.getNumGroups(),u=0;s>u;++u){var p=i.getBoundingInfo(u);h.set(p.getBBMin(),n),h.set(p.getBBMax(),a);for(var m=0;3>m;++m)t[m]=Math.min(t[m],n[m]),t[m+3]=Math.max(t[m+3],a[m])}return t}function y(e,r){var t=[],a=[],o=[],s=[],u=[],f=i.Version.parse(e.version||"1.0","wosr");M.validate(f);var v="meshsymbol_"+e.model.name,g=e.textureDefinitions,y={};for(var h in g){var I=g[h],T=I.images[0].data;w(T,"symbol resources must have embedded texture data (at the moment)");var B=I.encoding+";base64,"+T,E="/textureDefinitions/"+h,A=new d(B,v,{noUnpackFlip:!0});u.push(A),y[E]={engineTexObj:A,transparent:"rgba"===I.channels}}for(var O=e.model.geometries,S=e.materialDefinitions,j=0;j<O.length;j++){var D=O[j];D.params.components||x(D);var R=D.params.components,C=R.length,G=D.params.faces,P=D.params.vertexAttributes,U=D.params.topology||"Indexed",V={};for(var _ in P){var q=P[_],N=q.values;w(q.values,"symbol resources with external geometry bin not yet supported"),V[_]={data:N,size:q.valuesPerElement}}var F=void 0,Y=void 0,z=new Array(C);if("Indexed"===U){F=G.componentIndices,Y={};for(var k in G)Y[k]=G[k].byteOffset}else"PerAttributeArray"!==U?console.warn("I3S symbol loader: unsupported topology type "+U):1!==C&&console.warn("I3S symbol loader: if topology is not Indexed, only single component geometries are supported");o.push([]);for(var H=0;H<R.length;H++){var K=R[H],L={type:"triangle",positionKey:"position",indices:{}};if(F){var X=C-1>H?F[H+1]-F[H]:G.position.count-F[H];for(var J in G)if("componentIndices"!==J){var Q=G[J];w(Q.values,"symbol resources with external geometry bin not yet supported"),L.indices[J]=new Uint32Array(Q.values),Y[J]+=4*X}}else{var W=b(V.position.data.length/V.position.size);for(var Z in V)L.indices[Z]=W}z[H]=L;var $=void 0;K.texture&&($=y[K.texture].engineTexObj.getId());var ee=s[K.material]?s[K.material][K.texture]:null;if(!ee){var re=K.material.substring(K.material.lastIndexOf("/")+1),te=S[re].params;1===te.transparency&&(te.transparency=0);var ne={ambient:te.diffuse,diffuse:te.diffuse,specular:[0,0,0],shininess:0,opacity:1-te.transparency,transparent:te.transparency>0,textureId:$,doubleSided:!0,cullFace:"none",flipV:!1,colorMixMode:te.externalColorMixMode||"tint"};r.materialParamsMixin&&n.mixin(ne,r.materialParamsMixin),ee=new c(ne,v),s[K.material]||(s[K.material]={}),s[K.material][K.texture]=ee,a.push(ee)}o[j].push(ee)}var ae=new p(new m(z,V),v);t.push(ae)}return{stageResources:(oe={},oe[l.ModelContentType.TEXTURE]=u,oe[l.ModelContentType.MATERIAL]=a,oe[l.ModelContentType.GEOMETRY]=t,oe),materialsByComponent:o,pivotOffset:e.model.pivotOffset};var oe}function x(e){var r=e.params;w(r.material),r.components=[{id:1,material:e.params.material,texture:e.params.texture,region:e.params.texture}],r.faces&&(r.faces.componentIndices=[r.faces.position.count])}function b(e){for(var r=new Uint32Array(e),t=0;e>t;t++)r[t]=t;return r}Object.defineProperty(r,"__esModule",{value:!0});var h=s.vec3d,w=u.assert,M=new i.Version(1,1,"wosr");r.fetch=v,r.computeBoundingBox=g,r.createStageResources=y});

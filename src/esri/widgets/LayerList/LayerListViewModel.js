@@ -1,0 +1,25 @@
+// COPYRIGHT © 2017 Esri
+//
+// All rights reserved under the copyright laws of the United States
+// and applicable international laws, treaties, and conventions.
+//
+// This material is licensed for use under the Esri Master License
+// Agreement (MLA), and is bound by the terms of that agreement.
+// You may redistribute and use this code without modification,
+// provided you adhere to the terms of the MLA and include this
+// copyright notice.
+//
+// See use restrictions at http://www.esri.com/legal/pdfs/mla_e204_e300/english
+//
+// For additional information, contact:
+// Environmental Systems Research Institute, Inc.
+// Attn: Contracts and Legal Services Department
+// 380 New York Street
+// Redlands, California, USA 92373
+// USA
+//
+// email: contracts@esri.com
+//
+// See http://js.arcgis.com/4.4/esri/copyright.txt for details.
+
+define(["require","exports","../../core/tsSupport/declareExtendsHelper","../../core/tsSupport/decorateHelper","../../core/Accessor","../../core/Collection","../../core/Evented","../../core/HandleRegistry","../../core/watchUtils","./ListItem","./support/layerListUtils","dojo/debounce","dojo/has","../../core/accessorSupport/decorators"],function(t,e,i,n,o,r,s,a,c,p,l,u,d,h){var m=d("dojo-debug-messages"),y={map:"map",view:"view",layers:"layers",listItems:"list-items"},f="hide",_=r.ofType(p),v=function(t){function e(e){var i=t.call(this)||this;return i._actionsOpenMap=new Map,i._itemOpenMap=new Map,i._handles=new a,i.listItemCreatedFunction=null,i.operationalItems=new _,i.view=null,i._handles.add(c.init(i,"view",function(){return i._viewHandles()}),y.view),i._compileList=u(i._compileList,0),i}return i(e,t),e.prototype.destroy=function(){this._handles.destroy(),this._handles=null,this.view=null,this.operationalItems.removeAll()},Object.defineProperty(e.prototype,"createActionsFunction",{get:function(){return this._get("createActionsFunction")||null},set:function(t){m&&console.warn('"createActionsFunction" is deprecated, use "listItemCreatedFunction" instead'),this._set("createActionsFunction",t)},enumerable:!0,configurable:!0}),Object.defineProperty(e.prototype,"state",{get:function(){var t=this.get("view"),e=this.get("view.ready");return e?"ready":t?"loading":"disabled"},enumerable:!0,configurable:!0}),e.prototype.triggerAction=function(t,e){t&&this.emit("trigger-action",{action:t,item:e})},e.prototype._createMapHandles=function(t){var e=this;this._handles.remove(y.map);var i=t&&t.get("map.layers");if(i){var n=i.on("change",function(){return e._compileList(t)});this._handles.add(n,y.map)}},e.prototype._resetMapItems=function(t){this._actionsOpenMap.clear(),this._itemOpenMap.clear(),this._createMapHandles(t),this._compileList(t)},e.prototype._setUpChildActions=function(t){var e=this;t.forEach(function(t){return e._setupActions(t)})},e.prototype._watchItemProperties=function(t){var e=this;this._handles.add([c.watch(t,"actionsOpen",function(i){e._actionsOpenMap.set(t.layer,i)}),c.watch(t,"open",function(i){e._itemOpenMap.set(t.layer,i)}),t.children.on("change",function(){e._setUpChildActions(t.children)})],y.listItems)},e.prototype._modifyListItemChildren=function(t){var e=this;t.forEach(function(t){return e._modifyListItem(t)})},e.prototype._modifyListItem=function(t){if("function"==typeof this.listItemCreatedFunction){var e={item:t};this.listItemCreatedFunction.call(null,e)}this._modifyListItemChildren(t.children)},e.prototype._setupActions=function(t){if("function"==typeof this.createActionsFunction){var e={item:t},i=this.createActionsFunction.call(null,e);i&&i.length&&(t.actionsSections=i)}this._setUpChildActions(t.children)},e.prototype._createListItem=function(t){var e=!!this._actionsOpenMap.get(t),i=!!this._itemOpenMap.get(t),n=new p({actionsOpen:e,open:i,layer:t,view:this.view});return this._setupActions(n),this._watchItemProperties(n),this._modifyListItem(n),n},e.prototype._compileList=function(t){var e=this;if(!this.destroyed){this._handles.remove(y.listItems);var i=t&&t.get("map.layers"),n=[];i&&i.forEach(function(i){c.watch(i,"listMode",function(){return e._compileList(t)});var o=l.findLayerListMode(i);if(o!==f){var r=e._createListItem(i);n.unshift(r)}}),this.operationalItems.removeAll(),this.operationalItems.addMany(n)}},e.prototype._viewHandles=function(){var t=this,e=this.view;this._handles.remove(y.layers),this._resetMapItems(e),e&&e.then(function(){t._handles.add([c.init(e,"map",function(){return t._resetMapItems(e)}),e.layerViews.on("change",function(){return t._compileList(e)}),c.init(t,"createActionsFunction",function(){return t._compileList(e)}),c.init(t,"listItemCreatedFunction",function(){return t._compileList(e)})],y.layers)})},e}(h.declared(o,s));return n([h.property()],v.prototype,"createActionsFunction",null),n([h.property()],v.prototype,"listItemCreatedFunction",void 0),n([h.property({type:_})],v.prototype,"operationalItems",void 0),n([h.property({dependsOn:["view.ready"],readOnly:!0})],v.prototype,"state",null),n([h.property()],v.prototype,"view",void 0),v=n([h.subclass("esri.widgets.LayerList.LayerListViewModel")],v)});
