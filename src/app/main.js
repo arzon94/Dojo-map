@@ -374,10 +374,12 @@ define([
         "VisitorParking",
         "TimedParking",
         "GraduateStudents",
-        "FacultyandStaff"
+        "FacultyandStaff",
+        "HeritageHalls",
+        "HelamanHalls"
       ];
       var featureLayerArray = [];
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < parkingLotsArrayNames.length; i++) {
         featureLayerArray[i] = new FeatureLayer({
           url: "https://services.arcgis.com/FvF9MZKp3JWPrSkg/arcgis/rest/services/" + parkingLotsArrayNames[i] + "/FeatureServer/0",
           outFields: [
